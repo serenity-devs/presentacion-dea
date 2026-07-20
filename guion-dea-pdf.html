@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guión — Cualquiera puede salvar una vida</title>
+
+<!--
+  ─────────────────────────────────────────────────────────────
+  VERSIÓN GUIÓN · PENSADA PARA IMPRIMIR O EXPORTAR A PDF
+  ─────────────────────────────────────────────────────────────
+  Cada bloque es una página A4 apaisada.
+
+  EXPORTAR A PDF
+  1. Abrir este archivo en Chrome.
+  2. Archivo ▸ Imprimir  (Cmd + P)
+  3. Destino: «Guardar como PDF»
+  4. Orientación: HORIZONTAL
+  5. Márgenes: NINGUNO
+  6. Marcar «Gráficos de fondo»   ← importante, si no salen los colores
+  7. Guardar.
+
+  Todo lo que va en gris claro con la marca ▸ son ACOTACIONES:
+  lo que haces, no lo que dices. Lo que va entrecomillado
+  en grande es lo que se dice en voz alta.
+
+  AÑADIR IMÁGENES
+  Los huecos con marco discontinuo son <div class="ph">…</div>.
+  Sustituir el bloque entero por:
+      <img class="shot" src="nombre-del-archivo.jpg" alt="descripción">
+  Las fotos deben estar en esta misma carpeta.
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:  #fbf8f3;
+  --ink:    #16181c;
+  --soft:   #5d6167;
+  --hair:   #d9d3c8;
+  --red:    #c92f22;
+  --red-bg: #fbeae7;
+  --green:  #1b7a52;
+  --green-bg:#e7f4ee;
+  --amber:  #b06a00;
+
+  --display:"Anton","Haettenschweiler","Impact","Arial Narrow Bold",sans-serif;
+  --body:"IBM Plex Sans","Helvetica Neue",Helvetica,sans-serif;
+  --mono:"IBM Plex Mono","SF Mono",Menlo,monospace;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+body{
+  background:#e6e2da;
+  font-family:var(--body);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  padding:24px 0;
+}
+
+/* ── Página A4 apaisada ─────────────────────────────────── */
+.page{
+  width:297mm; min-height:210mm;
+  margin:0 auto 18px;
+  background:var(--paper);
+  position:relative;
+  padding:16mm 18mm 18mm;
+  display:flex; flex-direction:column;
+  box-shadow:0 6px 26px rgba(0,0,0,.18);
+  overflow:hidden;
+}
+/* Rejilla de papel de ECG, muy tenue */
+.page::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:
+    linear-gradient(rgba(201,47,34,.055) 1px, transparent 1px) 0 0/100% 5mm,
+    linear-gradient(90deg, rgba(201,47,34,.055) 1px, transparent 1px) 0 0/5mm 100%;
+}
+.page > *{ position:relative; z-index:1 }
+
+/* Cabecera y pie de página */
+.head{
+  display:flex; justify-content:space-between; align-items:baseline;
+  border-bottom:2.5px solid var(--ink); padding-bottom:3mm; margin-bottom:7mm;
+  font-family:var(--mono); font-size:8.5pt; letter-spacing:.18em; text-transform:uppercase;
+}
+.head .sec{ font-weight:600 }
+.head .clock{ color:var(--red) }
+.foot{
+  position:absolute; left:18mm; right:18mm; bottom:8mm; z-index:1;
+  display:flex; justify-content:space-between;
+  font-family:var(--mono); font-size:7.5pt; letter-spacing:.14em; color:#9a958c;
+  border-top:1px solid var(--hair); padding-top:2.5mm;
+}
+
+/* ── Tipografía ─────────────────────────────────────────── */
+h1,h2,h3{ font-family:var(--display); font-weight:400; text-transform:uppercase; line-height:.94; letter-spacing:.01em }
+h1{ font-size:40pt }
+h2{ font-size:26pt; margin-bottom:5mm }
+h3{ font-size:12.5pt; letter-spacing:.03em }
+
+p{ font-size:11pt; line-height:1.5; max-width:70ch }
+strong{ font-weight:600 }
+.small{ font-size:9.5pt; color:var(--soft) }
+
+/* Lo que se dice en voz alta */
+.say{
+  font-size:15pt; line-height:1.35; font-weight:600; color:var(--ink);
+  border-left:4px solid var(--red); padding:2mm 0 2mm 5mm; margin:4mm 0;
+  max-width:64ch;
+}
+.say.q{ font-family:var(--display); font-weight:400; font-size:22pt; text-transform:none; line-height:1.15 }
+
+/* Acotaciones: lo que haces */
+.do{
+  font-family:var(--mono); font-size:9pt; line-height:1.5; color:var(--soft);
+  display:grid; grid-template-columns:5mm 1fr; gap:1.5mm 0; margin:2mm 0; max-width:80ch;
+}
+.do::before{ content:"▸"; color:var(--red) }
+
+/* Bloques destacados */
+.box{ border:2px solid var(--red); background:var(--red-bg); padding:4mm 5mm; margin:4mm 0; max-width:75ch }
+.box.ok{ border-color:var(--green); background:var(--green-bg) }
+.box p{ font-size:12pt }
+.box .t{ font-family:var(--mono); font-size:8pt; letter-spacing:.2em; text-transform:uppercase; color:var(--red); display:block; margin-bottom:1.5mm }
+.box.ok .t{ color:var(--green) }
+
+/* Rejillas */
+.grid{ display:grid; gap:4mm; margin:4mm 0 }
+.g2{ grid-template-columns:1fr 1fr } .g3{ grid-template-columns:repeat(3,1fr) } .g4{ grid-template-columns:repeat(4,1fr) }
+.cols{ display:grid; grid-template-columns:1.15fr 1fr; gap:10mm; align-items:start; flex:1 }
+
+.card{ border:1px solid var(--hair); border-top:3px solid var(--red); background:#fff; padding:4mm }
+.card .k{ font-family:var(--display); font-size:24pt; color:var(--red); line-height:1 }
+.card h3{ margin-bottom:1.5mm }
+.card p{ font-size:9.5pt; color:#3d4147 }
+
+/* Eslabones de la cadena */
+.chain{ display:flex; gap:2mm; margin:5mm 0 }
+.link{ flex:1; background:#fff; border:1px solid var(--hair); border-left:4px solid var(--red); padding:4mm }
+.link .n{ font-family:var(--mono); font-size:8pt; letter-spacing:.2em; color:var(--red) }
+.link h3{ margin-top:2mm; font-size:11.5pt }
+
+/* Pasos numerados */
+.steps{ counter-reset:none; margin:3mm 0 }
+.step{ display:grid; grid-template-columns:12mm 1fr; gap:0 4mm; padding:2.6mm 0; border-top:1px solid var(--hair); align-items:baseline }
+.step:last-child{ border-bottom:1px solid var(--hair) }
+.step .n{ font-family:var(--display); font-size:17pt; color:var(--red); line-height:1 }
+.step .t{ font-size:12pt; font-weight:600 }
+.step .d{ font-size:10pt; color:var(--soft); margin-top:.8mm }
+.step .say-inline{ font-size:12pt; font-weight:600; color:var(--red) }
+
+/* Preguntas y respuestas (mitos) */
+.qa{ display:grid; grid-template-columns:1fr 1fr; gap:3mm 8mm; margin-top:3mm }
+.qa div{ border-bottom:1px solid var(--hair); padding-bottom:2.5mm }
+.qa .q{ font-size:11.5pt; font-weight:600 }
+.qa .a{ font-size:10pt; color:#3d4147; margin-top:1mm }
+.qa .a b{ font-family:var(--display); font-weight:400; font-size:13pt; color:var(--green); text-transform:uppercase; margin-right:2mm }
+.qa .a b.no{ color:var(--red) }
+
+/* Imágenes */
+.shot{ width:100%; max-height:105mm; object-fit:contain; display:block; border:1px solid var(--hair); background:#fff; padding:2mm }
+.ph{
+  border:1.5px dashed var(--red); background:var(--red-bg);
+  min-height:65mm; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2mm; text-align:center; padding:6mm;
+}
+.ph .lbl{ font-family:var(--mono); font-size:8pt; letter-spacing:.2em; text-transform:uppercase; color:var(--red) }
+.ph .hint{ font-size:9pt; color:var(--soft); max-width:38ch }
+.caption{ font-family:var(--mono); font-size:8pt; letter-spacing:.1em; color:#9a958c; margin-top:2mm; text-align:center }
+
+/* Portada */
+.cover{ justify-content:center }
+.cover h1{ font-size:66pt; line-height:.88 }
+.cover .hl{ color:var(--red) }
+.cover .rule{ height:3px; background:var(--ink); margin:7mm 0 5mm; width:120mm }
+.ecg{ width:150mm; height:16mm; margin-top:8mm }
+.ecg path{ fill:none; stroke:var(--red); stroke-width:2; stroke-linejoin:round; stroke-linecap:round }
+
+/* Índice de tiempos */
+.toc{ display:grid; grid-template-columns:16mm 1fr 24mm; gap:0; margin-top:2mm }
+.toc > *{ padding:2.6mm 0; border-bottom:1px solid var(--hair); font-size:11pt }
+.toc .n{ font-family:var(--mono); color:var(--red); font-size:9.5pt }
+.toc .t{ font-weight:600 }
+.toc .m{ font-family:var(--mono); font-size:9.5pt; color:var(--soft); text-align:right }
+
+.checks{ display:grid; grid-template-columns:1fr 1fr; gap:2.5mm 10mm; margin-top:3mm }
+.checks div{ display:grid; grid-template-columns:6mm 1fr; align-items:baseline; font-size:11pt; padding-bottom:2mm; border-bottom:1px solid var(--hair) }
+.checks div::before{ content:""; width:4mm; height:4mm; border:1.5px solid var(--ink); display:block }
+
+/* ── Impresión ──────────────────────────────────────────── */
+@page{ size:A4 landscape; margin:0 }
+@media print{
+  body{ background:#fff; padding:0 }
+  .page{
+    margin:0; box-shadow:none; width:297mm; height:210mm;
+    page-break-after:always; break-after:page;
+  }
+  .page:last-child{ page-break-after:auto; break-after:auto }
+  *{ -webkit-print-color-adjust:exact; print-color-adjust:exact }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ 1 · PORTADA ══════════════════════════════ -->
+<section class="page cover">
+  <div class="small" style="font-family:var(--mono); letter-spacing:.24em; text-transform:uppercase; color:var(--red)">
+    Jornadas de Salud Comunitaria · Rincón de Ademuz
+  </div>
+  <div class="rule"></div>
+  <h1>Cualquiera<br>puede salvar<br><span class="hl">una vida</span></h1>
+  <svg class="ecg" viewBox="0 0 600 60" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 30 H90 l10 0 l7 -3 l8 5 l8 -25 l8 47 l8 -24 l8 3 H250 l10 0 l7 -3 l8 5 l8 -25 l8 47 l8 -24 l8 3 H410 l10 0 l7 -3 l8 5 l8 -25 l8 47 l8 -24 l8 3 H600"/>
+  </svg>
+  <p style="margin-top:8mm; font-size:13pt">
+    Taller de reanimación cardiopulmonar y uso del desfibrilador externo automatizado (DEA).<br>
+    <span class="small">Guión completo del ponente · 15 minutos de explicación + 20-30 minutos de práctica.</span>
+  </p>
+  <div class="foot"><span>Guión de la charla</span><span>1</span></div>
+</section>
+
+<!-- ══════════ 2 · ÍNDICE Y TIEMPOS ═════════════════════ -->
+<section class="page">
+  <div class="head"><span class="sec">Escaleta</span><span class="clock">Total ≈ 45 min</span></div>
+  <h2>Guión y tiempos</h2>
+  <div class="toc">
+    <span class="n">01</span><span class="t">Introducción — la pregunta y los datos</span><span class="m">2-3 min</span>
+    <span class="n">02</span><span class="t">¿Qué es una parada cardiaca?</span><span class="m">3 min</span>
+    <span class="n">03</span><span class="t">Cadena de supervivencia</span><span class="m">3 min</span>
+    <span class="n">04</span><span class="t">Presentación del DEA</span><span class="m">5 min</span>
+    <span class="n">05</span><span class="t">Demostración completa — 11 pasos</span><span class="m">10 min</span>
+    <span class="n">06</span><span class="t">Mitos y miedos</span><span class="m">5 min</span>
+    <span class="n">07</span><span class="t">Demostración con voluntarios</span><span class="m">10-20 min</span>
+    <span class="n">08</span><span class="t">Cierre — las tres cosas</span><span class="m">2 min</span>
+  </div>
+  <div class="box ok" style="margin-top:6mm">
+    <span class="t">Formato recomendado</span>
+    <p>Taller participativo: <strong>15 minutos de explicación seguidos de 20-30 minutos de práctica.</strong>
+    Es el formato que deja más aprendizaje y, sobre todo, más confianza para que la gente se anime a actuar.</p>
+  </div>
+  <div class="foot"><span>Escaleta</span><span>2</span></div>
+</section>
+
+<!-- ══════════ 3 · INTRODUCCIÓN ═════════════════════════ -->
+<section class="page">
+  <div class="head"><span class="sec">01 · Introducción</span><span class="clock">2-3 min</span></div>
+  <h2>Empezar con una pregunta</h2>
+  <div class="say q">«¿Sabéis cuál es la diferencia entre una persona que sobrevive a una parada cardiaca y otra que no?»</div>
+  <div class="do">Dejar unos segundos de silencio. Que respondan.</div>
+
+  <p style="margin-top:4mm"><strong>Después explicar:</strong></p>
+  <div class="grid g4">
+    <div class="card"><div class="k">Miles</div><p>de paradas cardiorrespiratorias extrahospitalarias cada año en España.</p></div>
+    <div class="card"><div class="k">−10 %</div><p>de probabilidad de supervivencia por cada minuto que pasa sin actuar.</p></div>
+    <div class="card"><div class="k">Minutos</div><p>La ambulancia puede tardar varios minutos en llegar.</p></div>
+    <div class="card"><div class="k">Testigos</div><p>Los primeros en salvar una vida casi siempre son los testigos.</p></div>
+  </div>
+
+  <div class="box">
+    <span class="t">Mensaje clave</span>
+    <p style="font-size:15pt; font-weight:600">No hace falta ser sanitario para salvar una vida.</p>
+  </div>
+  <div class="foot"><span>01 · Introducción</span><span>3</span></div>
+</section>
+
+<!-- ══════════ 4 · QUÉ ES UNA PARADA ════════════════════ -->
+<section class="page">
+  <div class="head"><span class="sec">02 · La parada cardiaca</span><span class="clock">3 min</span></div>
+  <h2>¿Qué es una parada cardiaca?</h2>
+  <div class="do">Explicar de forma sencilla. Sin tecnicismos.</div>
+  <div class="say">«No es un infarto.»</div>
+  <p>Un infarto <strong>puede</strong> producir una parada. Pero una parada es otra cosa: es cuando…</p>
+
+  <div class="grid g3" style="margin-top:4mm">
+    <div class="card"><h3>El corazón deja de bombear</h3><p>No llega sangre al cerebro. Sin sangre, cada segundo cuenta.</p></div>
+    <div class="card"><h3>La persona está inconsciente</h3><p>Se ha desplomado. No responde a la voz ni al estímulo.</p></div>
+    <div class="card"><h3>No respira con normalidad</h3><p>O no respira, o hace <strong>boqueadas</strong>: jadeos aislados, ruidosos, que engañan.</p></div>
+  </div>
+
+  <div class="box" style="margin-top:5mm">
+    <span class="t">Hacer énfasis</span>
+    <p style="font-size:15pt; font-weight:600">Si dudas… actúa como si fuera una parada.</p>
+    <p class="small" style="margin-top:2mm">Comprimir a quien no lo necesitaba causa un daño mínimo. No comprimir a quien lo necesitaba es la muerte.</p>
+  </div>
+  <div class="foot"><span>02 · La parada cardiaca</span><span>4</span></div>
+</section>
+
+<!-- ══════════ 5 · CADENA DE SUPERVIVENCIA ══════════════ -->
+<section class="page">
+  <div class="head"><span class="sec">03 · Cadena de supervivencia</span><span class="clock">3 min</span></div>
+  <h2>Cuatro eslabones</h2>
+  <div class="do">Se pueden dibujar en una pizarra según se van nombrando.</div>
+  <div class="chain">
+    <div class="link"><div class="n">01</div><h3>Reconocer<br>la parada</h3></div>
+    <div class="link"><div class="n">02</div><h3>Llamar<br>al 112</h3></div>
+    <div class="link"><div class="n">03</div><h3>Empezar<br>la RCP</h3></div>
+    <div class="link"><div class="n">04</div><h3>Usar el DEA<br>cuanto antes</h3></div>
+  </div>
+  <div class="say">«Ninguno funciona bien sin el anterior.»</div>
+  <p>Es una cadena de verdad: si falta un eslabón, se rompe entera. Da igual lo rápida que sea la ambulancia
+  si nadie ha reconocido la parada. Y da igual que llegue el desfibrilador si nadie ha comprimido mientras tanto.</p>
+  <p style="margin-top:3mm"><strong>Y el primer eslabón siempre lo pone un testigo. Es decir: cualquiera de los que estáis aquí.</strong></p>
+  <div class="foot"><span>03 · Cadena de supervivencia</span><span>5</span></div>
+</section>
+
+<!-- ══════════ 6 · PRESENTACIÓN DEL DEA ═════════════════ -->
+<section class="page">
+  <div class="head"><span class="sec">04 · Presentación del DEA</span><span class="clock">5 min</span></div>
+  <h2>Sacar el equipo</h2>
+  <div class="cols">
+    <div>
+      <div class="do">Sacar el DEA delante de todos y enseñarlo en alto.</div>
+      <div class="say q">«¿Da miedo?»</div>
+      <div class="do">La mayoría responderá que sí.</div>
+      <div class="box ok">
+        <span class="t">Entonces decirles</span>
+        <p style="font-size:15pt; font-weight:600">«En cinco minutos vais a perder ese miedo.»</p>
+      </div>
+      <p class="small" style="margin-top:4mm">A partir de aquí el aparato circula. Que lo toquen, que lo abran, que lo cierren.
+      El miedo se va cuando lo has tenido en las manos.</p>
+    </div>
+    <div>
+      <img class="shot" src="WhatsApp Image 2026-07-20 at 14.38.26.jpeg" alt="Desfibrilador Primedic cerrado con el indicador OK visible">
+      <div class="caption">Primedic AED cerrado · indicador de estado «OK»</div>
+    </div>
+  </div>
+  <div class="foot"><span>04 · Presentación del DEA</span><span>6</span></div>
+</section>
+
+<!-- ══════════ 7 · PARTES DEL DEA ═══════════════════════ -->
+<section class="page">
+  <div class="head"><span class="sec">04 · Presentación del DEA</span><span class="clock">5 min</span></div>
+  <h2>Enseñar, una por una</h2>
+  <div class="cols">
+    <div>
+      <div class="steps">
+        <div class="step"><div class="n">1</div><div><div class="t">La pantalla</div><div class="d">Dónde mira uno para saber qué está pasando.</div></div></div>
+        <div class="step"><div class="n">2</div><div><div class="t">El indicador OK</div><div class="d">Se autocomprueba solo. Si pone OK, está listo para usarse.</div></div></div>
+        <div class="step"><div class="n">3</div><div><div class="t">El botón de encendido</div><div class="d">Verde. Es lo primero que se pulsa y lo único que hay que recordar.</div></div></div>
+        <div class="step"><div class="n">4</div><div><div class="t">El botón de descarga</div><div class="d">Naranja, con el rayo. Solo se pulsa cuando el aparato lo pide.</div></div></div>
+        <div class="step"><div class="n">5</div><div><div class="t">Los electrodos</div><div class="d">En su bolsa sellada, con el dibujo de dónde va cada uno.</div></div></div>
+        <div class="step"><div class="n">6</div><div><div class="t">El modo pediátrico</div><div class="d">El botón «1-8». Para niños de 1 a 8 años.</div></div></div>
+      </div>
+      <div class="box">
+        <span class="t">Explicar</span>
+        <p style="font-size:14pt; font-weight:600">«El desfibrilador piensa por vosotros.»</p>
+        <p class="small" style="margin-top:2mm">Él decide cuándo analizar · cuándo descargar · y cuándo <strong>NO</strong> descargar.
+        Nunca da una descarga si no está indicada.</p>
+      </div>
+    </div>
+    <div>
+      <img class="shot" src="WhatsApp Image 2026-07-20 at 14.38.26 (1).jpeg" alt="Desfibrilador Primedic abierto: pictogramas 1-2-3, electrodos y botonera">
+      <div class="caption">Primedic AED abierto · pictogramas, electrodos y botonera</div>
+    </div>
+  </div>
+  <div class="foot"><span>04 · Presentación del DEA</span><span>7</span></div>
+</section>
+
+<!-- ══════════ 8 · DEMOSTRACIÓN · ESCENARIO ═════════════ -->
+<section class="page">
+  <div class="head"><span class="sec">05 · Demostración completa</span><span class="clock">10 min</span></div>
+  <h2>El escenario</h2>
+  <div class="cols">
+    <div>
+      <div class="do">Colocar el maniquí en el suelo, en medio, con la gente alrededor.</div>
+      <div class="say">«Una persona cae al suelo delante de vosotros.»</div>
+      <div class="say q">«¿Qué hacemos?»</div>
+      <div class="do">Dejar que respondan ellos. Anotar mentalmente lo que dicen: casi siempre sale «llamar al 112» y casi nunca «comprimir».</div>
+      <div class="do">Después realizar la secuencia entera, paso por paso, en voz alta.</div>
+      <div class="box ok" style="margin-top:6mm">
+        <span class="t">Truco</span>
+        <p>Hacerlo primero mal a propósito (dudar, quedarse quieto, mirar alrededor) y luego bien.
+        El contraste se recuerda mucho mejor que la explicación.</p>
+      </div>
+    </div>
+    <div>
+      <div class="ph">
+        <div class="lbl">Hueco para imagen</div>
+        <div class="hint">Foto del maniquí de RCP en el suelo con el material del taller preparado alrededor, o de un taller anterior.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>05 · Demostración completa</span><span>8</span></div>
+</section>
+
+<!-- ══════════ 9 · PASOS 1-6 ════════════════════════════ -->
+<section class="page">
+  <div class="head"><span class="sec">05 · Demostración · pasos 1 a 6</span><span class="clock">10 min</span></div>
+  <h2>Valoración y aviso</h2>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><div>
+      <div class="t">Comprobar la seguridad</div>
+      <div class="d">Tráfico, cables, agua, fuego, humo. Si el sitio no es seguro para ti, no lo es para nadie.</div></div></div>
+    <div class="step"><div class="n">2</div><div>
+      <div class="t">Hablarle</div>
+      <div class="d"><span class="say-inline">«¿Se encuentra bien?»</span> — En voz alta, cerca del oído.</div></div></div>
+    <div class="step"><div class="n">3</div><div>
+      <div class="t">Estimular</div>
+      <div class="d">Sacudir suavemente por los hombros. Sin mover la cabeza.</div></div></div>
+    <div class="step"><div class="n">4</div><div>
+      <div class="t">Abrir la vía aérea</div>
+      <div class="d">Maniobra frente-mentón: una mano en la frente, dos dedos en la barbilla, cabeza hacia atrás.</div></div></div>
+    <div class="step"><div class="n">5</div><div>
+      <div class="t">Comprobar la respiración durante menos de 10 segundos</div>
+      <div class="d">Ver el pecho, oír, sentir el aire en la mejilla. <strong>Aquí se explican las boqueadas:</strong>
+      jadeos aislados, ruidosos, como un pez fuera del agua. Parece que respira, pero no respira. Eso <strong>es</strong> una parada.</div></div></div>
+    <div class="step"><div class="n">6</div><div>
+      <div class="t">Llamar al 112</div>
+      <div class="d">Señalar a una persona concreta: <span class="say-inline">«Tú, el de la camisa azul: llama al 112 y vuelve a decirme que lo has hecho.»</span>
+      Manos libres, teléfono en el suelo. El teleoperador guía mientras se comprime. A otra persona: «Tú, trae el desfibrilador.»</div></div></div>
+  </div>
+  <div class="do" style="margin-top:3mm">Se puede pedir aquí un voluntario del público para que haga la llamada de verdad.</div>
+  <div class="foot"><span>05 · Demostración · pasos 1 a 6</span><span>9</span></div>
+</section>
+
+<!-- ══════════ 10 · PASO 7 · RCP ════════════════════════ -->
+<section class="page">
+  <div class="head"><span class="sec">05 · Demostración · paso 7</span><span class="clock">10 min</span></div>
+  <h2>Paso 7 · Comenzar la RCP</h2>
+  <div class="cols">
+    <div>
+      <div class="grid g3">
+        <div class="card"><div class="k">Centro</div><p>del pecho. Talón de una mano, la otra encima, dedos entrelazados. Brazos rectos, hombros encima.</p></div>
+        <div class="card"><div class="k">100-120</div><p>compresiones por minuto. El ritmo de «La Macarena» o «Stayin' Alive».</p></div>
+        <div class="card"><div class="k">5-6 cm</div><p>de profundidad. Hay que hundir el pecho de verdad. Y dejar que suba del todo entre compresión y compresión.</p></div>
+      </div>
+      <div class="box">
+        <span class="t">Hacer que practiquen</span>
+        <p>Que todo el mundo dé al menos 30 compresiones en el maniquí, con el metrónomo puesto.
+        Es el momento en el que descubren que <strong>cansa</strong> y que hay que apretar mucho más de lo que pensaban.</p>
+      </div>
+      <p class="small" style="margin-top:3mm">Si alguien no quiere o no sabe ventilar: <strong>solo compresiones</strong>. Sirve, y mucho.</p>
+    </div>
+    <div>
+      <div class="ph">
+        <div class="lbl">Hueco para imagen</div>
+        <div class="hint">Posición de las manos en el centro del pecho y postura del reanimador: brazos rectos, hombros sobre las manos.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>05 · Demostración · paso 7</span><span>10</span></div>
+</section>
+
+<!-- ══════════ 11 · PASOS 8-11 ══════════════════════════ -->
+<section class="page">
+  <div class="head"><span class="sec">05 · Demostración · pasos 8 a 11</span><span class="clock">10 min</span></div>
+  <h2>Pasos 8 a 11 · Entra el DEA</h2>
+  <div class="cols">
+    <div>
+      <div class="steps">
+        <div class="step"><div class="n">8</div><div>
+          <div class="t">Traer el DEA, abrirlo, encenderlo, colocar los electrodos</div>
+          <div class="d">Pecho descubierto. Un electrodo bajo la clavícula derecha, otro en el costado izquierdo bajo la axila,
+          como indica el dibujo de la bolsa.</div></div></div>
+        <div class="step"><div class="n">9</div><div>
+          <div class="t">El DEA analiza</div>
+          <div class="d">«Analizando el ritmo. No toque al paciente.» Todo el mundo separado: nadie roza a la víctima, ni la ropa, ni la manta.</div></div></div>
+        <div class="step"><div class="n">10</div><div>
+          <div class="t">Si recomienda descarga</div>
+          <div class="d"><span class="say-inline">«¡Apartados todos!»</span> — Comprobar <strong>visualmente</strong>, de arriba abajo, que nadie toca.
+          Entonces pulsar el botón naranja.</div></div></div>
+        <div class="step"><div class="n">11</div><div>
+          <div class="t">Volver inmediatamente a la RCP</div>
+          <div class="d">No comprobar el pulso. No esperar. El aparato volverá a analizar solo, cada dos minutos.</div></div></div>
+      </div>
+      <div class="box">
+        <span class="t">Mientras se coloca el DEA</span>
+        <p style="font-size:14pt; font-weight:600">NO se deja de comprimir.</p>
+        <p class="small" style="margin-top:2mm">Una persona pega los electrodos, la otra sigue comprimiendo. Solo se para cuando el aparato lo pide.</p>
+      </div>
+    </div>
+    <div>
+      <div class="ph">
+        <div class="lbl">Hueco para imagen</div>
+        <div class="hint">Colocación de los electrodos sobre el maniquí, o el dibujo de la bolsa de electrodos ampliado.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>05 · Demostración · pasos 8 a 11</span><span>11</span></div>
+</section>
+
+<!-- ══════════ 12 · MITOS ═══════════════════════════════ -->
+<section class="page">
+  <div class="head"><span class="sec">06 · Mitos</span><span class="clock">5 min</span></div>
+  <h2>Los miedos y los mitos</h2>
+  <div class="do">Ir haciendo las preguntas al público y dejar que contesten antes de dar la respuesta.</div>
+  <div class="qa">
+    <div><div class="q">¿Puede electrocutarme?</div><div class="a"><b class="no">No</b>Solo descarga si nadie toca a la víctima. Por eso se avisa y se mira antes de pulsar.</div></div>
+    <div><div class="q">¿Puede matar al paciente?</div><div class="a"><b class="no">No</b>La persona ya está en parada. Sin ayuda, el desenlace es la muerte. Solo se puede mejorar la situación.</div></div>
+    <div><div class="q">¿Puede equivocarse?</div><div class="a"><b class="no">No</b>Analiza el ritmo cardiaco. Solo descarga si hace falta. Si no es un ritmo desfibrilable, ni siquiera carga.</div></div>
+    <div><div class="q">¿Y si tiene marcapasos?</div><div class="a"><b>Se usa igual</b>Se nota un bultito bajo la piel. Colocar el electrodo unos centímetros separado de él.</div></div>
+    <div><div class="q">¿Y si está mojado?</div><div class="a"><b>Secar y seguir</b>Secar el pecho rápidamente con una toalla. Y apartar a la persona de charcos o superficies metálicas.</div></div>
+    <div><div class="q">¿Y si tiene mucho pelo?</div><div class="a"><b>Rasurar</b>Solo si impide el contacto del electrodo. Rasurado rápido con la cuchilla del kit, y pegar.</div></div>
+    <div><div class="q">¿Y si lleva un parche de medicación?</div><div class="a"><b>Retirarlo</b>Quitar el parche antes, limpiar la zona y pegar ahí el electrodo.</div></div>
+    <div><div class="q">¿Y si está embarazada?</div><div class="a"><b>Sí</b>Se utiliza exactamente igual. Salvar a la madre es salvar al bebé.</div></div>
+  </div>
+  <div class="foot"><span>06 · Mitos</span><span>12</span></div>
+</section>
+
+<!-- ══════════ 13 · VOLUNTARIOS ═════════════════════════ -->
+<section class="page">
+  <div class="head"><span class="sec">07 · Demostración con voluntarios</span><span class="clock">10-20 min</span></div>
+  <h2>Ahora lo hacen ellos</h2>
+  <div class="cols">
+    <div>
+      <div class="say">«Es la parte que más gusta.»</div>
+      <div class="steps">
+        <div class="step"><div class="n">→</div><div>
+          <div class="t">Que una persona haga todo</div>
+          <div class="d">Desde comprobar la seguridad hasta la descarga. Sin ayudas, sin interrupciones.</div></div></div>
+        <div class="step"><div class="n">→</div><div>
+          <div class="t">Tú solo corriges</div>
+          <div class="d">Y solo al final, salvo que se pare del todo. Equivocarse aquí es el objetivo, no el problema.</div></div></div>
+        <div class="step"><div class="n">→</div><div>
+          <div class="t">Después otra persona. Y otra.</div>
+          <div class="d">En diez minutos aprenderán muchísimo. Cada repetición vale más que diez explicaciones.</div></div></div>
+      </div>
+      <div class="box ok">
+        <span class="t">Lo que se llevan</span>
+        <p>No es el procedimiento perfecto: es <strong>haberlo hecho una vez con las manos</strong>.
+        Eso es lo que hace que alguien se atreva el día que pasa de verdad.</p>
+      </div>
+    </div>
+    <div>
+      <div class="ph">
+        <div class="lbl">Hueco para imagen</div>
+        <div class="hint">Gente del pueblo practicando en el maniquí, o un voluntario colocando los electrodos.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>07 · Demostración con voluntarios</span><span>13</span></div>
+</section>
+
+<!-- ══════════ 14 · FINAL ═══════════════════════════════ -->
+<section class="page">
+  <div class="head"><span class="sec">08 · Cierre</span><span class="clock">2 min</span></div>
+  <h2>Acabar con esta idea</h2>
+  <div class="say q" style="max-width:none">
+    «Dentro de unos años quizá olvidéis muchas cosas de esta charla.<br>
+    Pero si algún día alguien cae delante de vosotros, quiero que recordéis solo tres:»
+  </div>
+  <div class="grid g3" style="margin-top:5mm">
+    <div class="card"><div class="k">01</div><h3 style="margin-top:2mm; font-size:17pt">Llamar<br>al 112</h3></div>
+    <div class="card"><div class="k">02</div><h3 style="margin-top:2mm; font-size:17pt">Empezar a<br>comprimir</h3></div>
+    <div class="card"><div class="k">03</div><h3 style="margin-top:2mm; font-size:17pt">Encender el<br>desfibrilador</h3></div>
+  </div>
+  <div class="box" style="margin-top:6mm">
+    <p style="font-size:16pt; font-weight:600">«Eso puede marcar la diferencia entre una vida y una muerte.»</p>
+  </div>
+  <div class="foot"><span>08 · Cierre</span><span>14</span></div>
+</section>
+
+<!-- ══════════ 15 · MATERIAL ════════════════════════════ -->
+<section class="page">
+  <div class="head"><span class="sec">Anexo · preparación</span><span class="clock">Antes de salir de casa</span></div>
+  <h2>Material que hay que llevar</h2>
+  <div class="checks">
+    <div><span>El <strong>DEA real</strong> (el Primedic de las fotografías).</span></div>
+    <div><span>Un <strong>maniquí de RCP</strong> adulto y, si es posible, también pediátrico.</span></div>
+    <div><span><strong>Electrodos de demostración</strong>, o un juego caducado para practicar la colocación.</span></div>
+    <div><span>Una <strong>cuchilla desechable</strong> para explicar el rasurado si fuera necesario.</span></div>
+    <div><span>Una <strong>toalla pequeña</strong> para simular el secado del tórax.</span></div>
+    <div><span><strong>Guantes de nitrilo</strong>, varias tallas.</span></div>
+    <div><span>Un <strong>metrónomo</strong> o música a 100-120 pulsaciones por minuto.</span></div>
+    <div><span>Toallitas o desinfectante para limpiar el maniquí entre voluntarios.</span></div>
+  </div>
+  <div class="box ok" style="margin-top:7mm">
+    <span class="t">Recordatorio de formato</span>
+    <p>Explicación breve de <strong>15 minutos</strong> + <strong>20-30 minutos de práctica</strong>.
+    Si hay que recortar, se recorta la explicación, nunca la práctica.</p>
+  </div>
+  <div class="foot"><span>Anexo · preparación</span><span>15</span></div>
+</section>
+
+</body>
+</html>
