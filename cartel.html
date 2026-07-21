@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Cartel — Cualquiera puede salvar una vida</title>
+
+<!--
+  ─────────────────────────────────────────────────────────────
+  CARTEL A4 PARA ANUNCIAR EL TALLER
+  ─────────────────────────────────────────────────────────────
+  Mide exactamente una hoja A4 vertical (210 × 297 mm).
+
+  PARA IMPRIMIR O GUARDAR EN PDF
+  Chrome ▸ Cmd + P ▸ Guardar como PDF ▸ márgenes NINGUNO
+  ▸ marcar «Gráficos de fondo».
+
+  ARCHIVOS QUE USA
+  · dea1.jpg                  la foto del desfibrilador
+  · escudo-casas-bajas.svg    escudo oficial del municipio
+    (Wikimedia Commons, «Escut de Cases Baixes»)
+
+  QUÉ SE PUEDE TOCAR FÁCIL
+  · Si hay que inscribirse o el aforo es limitado, ponlo en la
+    tira amarilla de abajo del bloque de datos.
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@700;800&family=Source+Sans+3:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --cream:#fdf7ea;
+  --ink:#1b1a16;
+  --red:#d02a1c;
+  --red-dark:#a3231b;
+  --green:#0e6b4c;
+  --amber:#f7c331;
+  --display:"Bitter", Georgia, serif;
+  --body:"Source Sans 3", "Helvetica Neue", Helvetica, sans-serif;
+}
+*{ box-sizing:border-box; margin:0; padding:0 }
+body{ background:#dedad2; font-family:var(--body); color:var(--ink);
+  display:flex; justify-content:center; padding:20px 0; -webkit-font-smoothing:antialiased }
+
+.hoja{
+  width:210mm; height:297mm; position:relative; overflow:hidden;
+  background:var(--cream);
+  box-shadow:0 8px 30px rgba(0,0,0,.3);
+  display:flex; flex-direction:column;
+}
+
+/* ── Franja superior ────────────────────────────────────── */
+.franja{
+  background:var(--red); color:#fff; text-align:center;
+  padding:5mm 10mm; font-size:12.5pt; font-weight:900;
+  letter-spacing:.2em; text-transform:uppercase;
+}
+
+.cuerpo{ flex:1; padding:9mm 14mm 6mm; display:flex; flex-direction:column; position:relative }
+
+/* ── Titular ────────────────────────────────────────────── */
+h1{
+  font-family:var(--display); font-weight:800; font-size:50pt; line-height:.98;
+  letter-spacing:-.02em; text-transform:uppercase; position:relative; z-index:3;
+}
+h1 .marca{
+  display:inline-block; background:var(--red); color:#fff;
+  padding:0 3mm 1.5mm; border-radius:2mm; transform:rotate(-1.5deg);
+}
+
+/* ── Foto del desfibrilador ─────────────────────────────── */
+.escena{ position:relative; flex:1; min-height:108mm; margin-top:4mm }
+.blob{
+  position:absolute; right:-10mm; top:-8mm; width:104mm; height:104mm; border-radius:50%;
+  background:#fbe6ad; z-index:1;      /* tono suave: la foto va en multiply encima */
+}
+.blob.b2{ right:64mm; top:54mm; width:52mm; height:52mm; background:rgba(14,107,76,.13) }
+.foto{
+  position:absolute; right:0; top:-4mm; width:97mm; z-index:2;
+  transform:rotate(-6deg); mix-blend-mode:multiply;
+}
+.claim{
+  position:absolute; left:0; top:50%; transform:translateY(-50%);
+  z-index:3; max-width:79mm;
+  font-size:24pt; line-height:1.22; font-weight:700;
+}
+.claim .imparte{
+  display:block; margin-top:6mm; background:#fff; border:2.5px solid var(--ink);
+  border-radius:3mm; padding:4.5mm 5.5mm; font-size:14.5pt; font-weight:600; line-height:1.35;
+  color:var(--ink);
+}
+.claim .imparte strong{ color:var(--red); font-weight:800 }
+.claim .sub{ display:block; margin-top:5mm; font-size:15pt; font-weight:600; color:var(--red-dark); line-height:1.3 }
+
+/* ── Datos ──────────────────────────────────────────────── */
+.datos{ background:var(--ink); color:#fff; border-radius:4mm; padding:7mm 8mm;
+  display:grid; grid-template-columns:auto 1fr; gap:4mm 6mm; align-items:center }
+.datos .dia{
+  font-family:var(--display); font-weight:800; font-size:40pt; line-height:.9;
+  color:var(--amber); text-align:center; padding-right:6mm; border-right:2px solid rgba(255,255,255,.25);
+}
+.datos .dia span{ display:block; font-size:13pt; letter-spacing:.16em; text-transform:uppercase; color:#fff; margin-top:2mm }
+.datos .hora{ font-family:var(--display); font-weight:800; font-size:27pt; line-height:1 }
+.datos .sitio{ font-size:14.5pt; font-weight:600; margin-top:2mm; color:#e8e2d5 }
+.tira{
+  background:var(--amber); color:var(--ink); border-radius:0 0 4mm 4mm;
+  margin:-4mm 4mm 0; padding:3.5mm 6mm 3mm; text-align:center;
+  font-size:12pt; font-weight:700; letter-spacing:.04em;
+}
+
+/* ── Pie con el escudo ──────────────────────────────────── */
+.pie{
+  margin-top:auto; padding:6mm 14mm 7mm; display:flex; align-items:center; gap:5mm;
+  border-top:3px solid var(--red);
+}
+.pie img{ height:22mm; width:auto }
+.pie .quien{ font-size:13pt; font-weight:700; line-height:1.3 }
+.pie .quien span{ display:block; font-size:10.5pt; font-weight:400; color:#5d574c; margin-top:1mm }
+
+@page{ size:A4 portrait; margin:0 }
+@media print{
+  body{ background:#fff; padding:0 }
+  .hoja{ box-shadow:none }
+  *{ -webkit-print-color-adjust:exact; print-color-adjust:exact }
+}
+</style>
+</head>
+<body>
+
+<div class="hoja">
+
+  <div class="franja">Taller práctico · abierto a todo el mundo</div>
+
+  <div class="cuerpo">
+
+    <h1>Cualquiera<br>puede salvar<br><span class="marca">una vida</span></h1>
+
+    <div class="escena">
+      <div class="blob"></div>
+      <div class="blob b2"></div>
+      <img class="foto" src="dea1.jpg" alt="Desfibrilador">
+      <p class="claim">Aprende a reconocer una parada cardiaca y usar el desfibrilador.
+        <span class="sub">No hace falta ser sanitario ni saber nada de antes.</span>
+        <span class="imparte">Impartido por <strong>profesionales sanitarios</strong> de nuestro centro de salud</span></p>
+    </div>
+
+    <div class="datos">
+      <div class="dia">22<span>Julio</span></div>
+      <div>
+        <div class="hora">Miércoles, 19:00 h</div>
+        <div class="sitio">Salón Multiusos (Casas Bajas)</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="pie">
+    <img src="escudo-casas-bajas.svg" alt="Escudo de Casas Bajas">
+    <div class="quien">Ayuntamiento de Casas Bajas
+      <span>Rincón de Ademuz · Valencia</span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
