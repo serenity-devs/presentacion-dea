@@ -280,42 +280,29 @@ strong{ font-weight:700 }
 /* ══ AJUSTES PARA IMPRIMIR / EXPORTAR A PDF ═══════════════════════════ */
 html,body{ height:auto; overflow:visible; background:#e6e2da }
 body{ padding:20px 0 }
-
 .slide{
-  position:relative; inset:auto;
-  display:flex !important;
-  width:297mm; height:167mm; margin:0 auto 16px;
-  overflow:hidden;
+  position:relative; inset:auto; display:flex !important;
+  width:297mm; height:167mm; margin:0 auto 16px; overflow:hidden;
   background-color:var(--bg);
   background-image:
     radial-gradient(70% 55% at 88% 8%, rgba(163,35,27,.06), transparent 65%),
     radial-gradient(60% 50% at 5% 95%, rgba(14,107,76,.06), transparent 65%);
-  box-shadow:0 8px 30px rgba(0,0,0,.35);
-  padding:14mm 18mm;
+  box-shadow:0 8px 30px rgba(0,0,0,.35); padding:14mm 18mm;
 }
 .slide.divider{ background-color:var(--dark); background-image:none }
 .slide > *{ animation:none !important }
-
-/* En papel no hay «siguiente»: todo destapado */
 .myth .a{ display:block !important }
 .myth{ background:#f2faf6 !important; border-color:var(--green) !important }
 .frag{ opacity:1 !important }
-
-/* Sin línea de progreso ni barra de ayuda */
 .progress,.hud{ display:none !important }
-
 .shot{ max-height:112mm }
 .ecg{ height:14mm }
-
-/* Al imprimir, la ventana puede ser estrecha y disparar la media query
-   de móvil. Se reafirman aquí las rejillas de escritorio. */
 .g2{ grid-template-columns:1fr 1fr }
 .g3{ grid-template-columns:repeat(3,1fr) }
 .chain{ display:flex }
 .media{ grid-template-columns:1.05fr 1fr }
 .myths{ grid-template-columns:repeat(2,1fr) }
 .three{ grid-template-columns:repeat(3,1fr) }
-
 @page{ size:297mm 167mm; margin:0 }
 @media print{
   body{ background:#fff; padding:0 }
@@ -619,7 +606,7 @@ body{ padding:20px 0 }
     <div>
       <div class="pasohead"><div class="n">6</div><h2>Llamar al 112</h2></div>
       <p>Señala a <strong>una persona concreta</strong>: «Tú, el de la camisa azul, llama al 112.»</p>
-      <p>Pon el <strong>manos libres</strong>. Te van guiando mientras aprietas.</p>
+      <p>Pon el <strong>manos libres</strong>. Te van guiando mientras haces el masaje.</p>
     </div>
     <div>
       <!-- Móvil con el 112 en la pantalla y las ondas del manos libres -->
